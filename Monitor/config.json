@@ -1,0 +1,144 @@
+{
+  "version": "1.0",
+  "window": {
+    "size_minutes": 30,
+    "step_minutes": 15,
+    "timezone": "America/Manaus"
+  },
+  "processing": {
+    "min_attempts_per_group": 20,
+    "min_failures_per_group": 3,
+    "consecutive_windows_for_systematic": 2,
+    "alert_suppression_minutes": 60,
+    "deduplicate_alerts": true
+  },
+  "input": {
+    "accepted_extensions": [".xlsx", ".csv"],
+    "recordings_sheet": "recordings",
+    "line_stops_sheet": "line_stops",
+    "data_dictionary_sheet": "data_dictionary",
+    "required_recording_columns": [
+      "timestamp",
+      "line",
+      "station",
+      "jig_id",
+      "model",
+      "firmware_version",
+      "serial_number",
+      "mac_address",
+      "api_key",
+      "attempt",
+      "result",
+      "failed_step",
+      "error_code",
+      "disposition"
+    ]
+  },
+  "output": {
+    "alerts_file": "alerts.csv",
+    "audit_file": "audit_log.jsonl",
+    "hitl_queue_file": "hitl_queue.csv",
+    "outliers_file": "outliers_ignored.csv",
+    "baseline_file": "baseline_summary.csv",
+    "periodic_report_file": "periodic_report.md",
+    "state_file": "monitor_state.json"
+  },
+  "severity": {
+    "medium_rate": 0.10,
+    "high_rate": 0.20,
+    "critical_rate": 0.30,
+    "high_ppm": 200000,
+    "critical_ppm": 300000
+  },
+  "hitl": {
+    "send_high_severity": true,
+    "send_critical_severity": true,
+    "send_ambiguous_cases": true,
+    "low_sample_multiplier": 1.25
+  },
+  "rules": {
+    "JIG_STEP_CHRONIC": {
+      "enabled": true,
+      "description": "Falha cronica por jig e etapa.",
+      "dimensions": ["line", "station", "jig_id", "failed_step", "error_code"],
+      "min_attempts": 20,
+      "min_failures": 3,
+      "min_rate": 0.10,
+      "baseline_multiplier": 3.0,
+      "systematic_rate": 0.25,
+      "suggested_action": "Parar o jig, abrir manutencao e reprocessar unidades afetadas."
+    },
+    "REMOTE_API": {
+      "enabled": true,
+      "description": "Falha remota de download ou autenticacao por API key.",
+      "dimensions": ["line", "api_key"],
+      "failed_steps": ["fw_download"],
+      "error_codes": ["ERR_AUTH"],
+      "min_attempts": 20,
+      "min_failures": 3,
+      "min_rate": 0.08,
+      "high_rate": 0.20,
+      "baseline_multiplier": 3.0,
+      "affected_lines_for_high": 2,
+      "suggested_action": "Validar conectividade, renovar API key e pausar a chave se severidade alta."
+    },
+    "FIRMWARE_BATCH": {
+      "enabled": true,
+      "description": "Firmware ou lote com falha concentrada por modelo, etapa e codigo.",
+      "dimensions": ["firmware_version", "model", "failed_step", "error_code"],
+      "min_attempts": 30,
+      "min_failures": 3,
+      "min_ppm": 100000,
+      "baseline_multiplier": 3.0,
+      "high_ppm": 200000,
+      "critical_ppm": 300000,
+      "suggested_action": "Bloquear lote de firmware, validar pacote e checksums, e segregar unidades afetadas."
+    },
+    "CYCLE_TIME_DRIFT": {
+      "enabled": true,
+      "description": "Drift sistematico de cycle time por etapa.",
+      "cycle_column_suffix": "_cycle_s",
+      "min_samples": 20,
+      "p95_baseline_multiplier": 1.5,
+      "median_mad_multiplier": 3.0,
+      "isolated_outlier_max_points": 2,
+      "suggested_action": "Verificar gargalo de software ou hardware na etapa e checar jig, estacao e paradas proximas."
+    },
+    "MAC_DUPLICATE": {
+      "enabled": true,
+      "description": "Mesmo MAC associado a seriais diferentes.",
+      "severity": "critical",
+      "ignore_same_serial_rework": true,
+      "suggested_action": "Revisar provisionamento, bloquear lote ate validar unicidade e auditar seriais afetados."
+    },
+    "CABLE_ZERO_CHANNELS": {
+      "enabled": true,
+      "description": "Falha de cabo ou zero canais em modelos com sintonizador.",
+      "dimensions": ["line", "station", "jig_id", "model"],
+      "required_flag_column": "has_cable",
+      "zero_channels_column": "cable_channels_found",
+      "failed_steps": ["cable_scan"],
+      "min_attempts": 20,
+      "min_failures": 3,
+      "min_rate": 0.10,
+      "suggested_action": "Verificar sinal de RF, cabos, conector e jig."
+    },
+    "BLUETOOTH_FAILURE": {
+      "enabled": true,
+      "description": "Falha de Bluetooth em modelos com Bluetooth.",
+      "dimensions": ["line", "station", "jig_id", "model"],
+      "required_flag_column": "has_bluetooth",
+      "ok_column": "bluetooth_ok",
+      "failed_steps": ["bluetooth"],
+      "min_attempts": 20,
+      "min_failures": 3,
+      "min_rate": 0.10,
+      "suggested_action": "Revisar calibracao Bluetooth e hardware associado ao jig."
+    },
+    "LINE_STOP_CONTEXT": {
+      "enabled": true,
+      "description": "Enriquecimento de alertas com paradas de linha que intersectam a janela.",
+      "minimum_overlap_minutes": 1
+    }
+  }
+}
