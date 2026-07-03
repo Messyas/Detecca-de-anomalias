@@ -110,7 +110,7 @@ def evaluate_alerts(alerts: pd.DataFrame, truth: pd.DataFrame) -> dict[str, Any]
         "false_alarm_rate": false_alarm_rate,
         "latency_mean": _safe_mean(latencies),
         "latency_median": _safe_median(latencies),
-        "latency_max": max(latencies) if latencies else None,
+        "latency_max": max((v for v in latencies if v is not None), default=None),
         "matches": matches,
     }
 
@@ -197,7 +197,7 @@ def _prepare_alerts(alerts: pd.DataFrame) -> pd.DataFrame:
 # Prepara o gabarito para pareamento.
 def _prepare_truth(truth: pd.DataFrame) -> pd.DataFrame:
     prepared = truth.copy()
-    for column in ["start_time", "end_time"]:
+    for column in ["incident_start", "incident_end"]:
         if column in prepared.columns:
             prepared[column] = pd.to_datetime(prepared[column], errors="coerce")
 
@@ -265,8 +265,8 @@ def _find_matching_incident(
 def _windows_intersect(alert: pd.Series, incident: pd.Series) -> bool:
     alert_start = alert.get("window_start")
     alert_end = alert.get("window_end")
-    incident_start = incident.get("start_time")
-    incident_end = incident.get("end_time")
+    incident_start = incident.get("incident_start")
+    incident_end = incident.get("incident_end")
 
     if pd.isna(alert_start) or pd.isna(alert_end):
         return True
@@ -331,7 +331,7 @@ def _dimensions_match(alert: pd.Series, incident: pd.Series) -> bool:
 # Calcula latencia em minutos.
 def _latency_minutes(alert: pd.Series, incident: pd.Series) -> float | None:
     alert_time = alert.get("alert_time")
-    incident_start = incident.get("start_time")
+    incident_start = incident.get("incident_start")
 
     if pd.isna(alert_time) or pd.isna(incident_start):
         return None

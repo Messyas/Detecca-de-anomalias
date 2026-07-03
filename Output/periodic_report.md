@@ -1,22 +1,37 @@
 # Relatorio Periodico do Monitor
 
-Gerado em: 2026-07-03T01:39:59.810969+00:00
+Gerado em: 2026-07-03T04:39:14.963175+00:00
 
 ## Periodo processado
 
-- Nenhum log novo processado nesta execucao.
+- Inicio: 2022-09-12 06:00:06
+- Fim: 2022-09-14 23:32:03
 
 ## Arquivos processados
 
-- Nenhum arquivo novo processado.
+- log_2022-09-12.xlsx: 6067 registros, 2022-09-12 06:00:06 ate 2022-09-12 23:32:50
+- log_2022-09-13.xlsx: 5872 registros, 2022-09-13 06:00:06 ate 2022-09-13 23:14:01
+- log_2022-09-14.xlsx: 5905 registros, 2022-09-14 06:00:24 ate 2022-09-14 23:32:03
 
 ## Alertas
 
-- Nenhum alerta emitido.
+- Total de alertas: 63
+
+Por severidade:
+- medium: 36
+- critical: 27
+
+Por regra:
+- CYCLE_TIME_DRIFT: 36
+- FIRMWARE_BATCH: 11
+- MAC_DUPLICATE: 6
+- REMOTE_API: 5
+- JIG_STEP_CHRONIC: 5
 
 ## HITL
 
-- Nenhum alerta enviado para revisao humana.
+- Alertas pendentes de revisao: 27
+- critical: 27
 
 ## Outliers ignorados
 
