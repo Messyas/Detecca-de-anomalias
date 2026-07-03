@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-# Este arquivo aplica as regras principais de anomalia.
+# Este arquivo aplica as regras de anomalia.
 # Ele gera alertas estruturados e registra outliers ignorados.
 
 import hashlib
@@ -27,6 +27,8 @@ ALERT_COLUMNS = [
     "where_model",
     "where_firmware",
     "where_api_key",
+    "related_line_stop_category",
+    "related_line_stop_reason",
     "evidence",
     "suggested_action",
     "total_attempts",
@@ -50,9 +52,10 @@ OUTLIER_COLUMNS = [
 ]
 
 
-# Executa todas as regras principais e devolve alertas e outliers.
+# Executa todas as regras e devolve alertas e outliers.
 def run_main_rules(
     recordings: pd.DataFrame,
+    line_stops: pd.DataFrame,
     baseline: pd.DataFrame,
     state: dict[str, Any],
     config: dict[str, Any],
@@ -108,8 +111,29 @@ def run_main_rules(
         )
         alerts.extend(cycle_alerts)
         outliers.extend(cycle_outliers)
+        alerts.extend(
+            _detect_cable_zero_channels(
+                window_data,
+                baseline,
+                state,
+                config,
+                window_start,
+                window_end,
+            )
+        )
+        alerts.extend(
+            _detect_bluetooth_failure(
+                window_data,
+                baseline,
+                state,
+                config,
+                window_start,
+                window_end,
+            )
+        )
 
     alerts.extend(_detect_mac_duplicate(data, state, config))
+    _enrich_alerts_with_line_stops(alerts, line_stops)
     return _alerts_frame(alerts), _outliers_frame(outliers)
 
 
@@ -444,6 +468,194 @@ def _detect_cycle_time_drift(
     return alerts, outliers
 
 
+# Detecta cabo com zero canais ou falha de cable_scan.
+def _detect_cable_zero_channels(
+    window_data: pd.DataFrame,
+    baseline: pd.DataFrame,
+    state: dict[str, Any],
+    config: dict[str, Any],
+    window_start: pd.Timestamp,
+    window_end: pd.Timestamp,
+) -> list[dict[str, Any]]:
+    rule_id = "CABLE_ZERO_CHANNELS"
+    rule = config.get("rules", {}).get(rule_id, {})
+    if not rule.get("enabled", True):
+        return []
+
+    flag_column = rule.get("required_flag_column", "has_cable")
+    channels_column = rule.get("zero_channels_column", "cable_channels_found")
+    needed = [
+        "line",
+        "station",
+        "jig_id",
+        "model",
+        "failed_step",
+        flag_column,
+        channels_column,
+    ]
+    if not _has_columns(window_data, needed):
+        return []
+
+    applicable = window_data[_truthy_series(window_data[flag_column])]
+    if applicable.empty:
+        return []
+
+    failed_steps = set(rule.get("failed_steps", ["cable_scan"]))
+    zero_channels = pd.to_numeric(applicable[channels_column], errors="coerce").eq(0)
+    step_fail = applicable["failed_step"].isin(failed_steps)
+    anomaly_rows = applicable[zero_channels | step_fail]
+
+    alerts = []
+    group_columns = ["line", "station", "jig_id", "model"]
+    for keys, failure_group in anomaly_rows.groupby(group_columns, dropna=False):
+        values = _keys_to_dict(group_columns, keys)
+        denominator = _count_attempts(applicable, values, group_columns)
+        failures = len(failure_group)
+        if not _has_minimum_volume(denominator, failures, rule):
+            continue
+
+        rate = failures / denominator
+        if rate < rule.get("min_rate", 0.10):
+            continue
+
+        baseline_rate = max(
+            _baseline_rate(baseline, "jig_id", values["jig_id"]),
+            _baseline_rate(baseline, "model", values["model"]),
+            _overall_baseline_rate(baseline),
+        )
+        severity = _severity_from_rate(rate, config)
+        alert = _new_alert(
+            state=state,
+            rule_id=rule_id,
+            rule_name="Cabo com zero canais ou falha de scan",
+            window_start=window_start,
+            window_end=window_end,
+            severity=severity,
+            what="cable_scan / zero_channels",
+            where_line=values["line"],
+            where_station=values["station"],
+            where_jig=values["jig_id"],
+            where_model=values["model"],
+            where_firmware=None,
+            where_api_key=None,
+            evidence=f"{failures} falhas de cabo em {denominator} tentativas; taxa {rate:.2%}",
+            suggested_action=rule.get("suggested_action", ""),
+            total_attempts=denominator,
+            failures=failures,
+            rate=rate,
+            baseline_rate=baseline_rate,
+            ppm=rate * 1_000_000,
+            baseline_ppm=baseline_rate * 1_000_000,
+            is_systematic=True,
+            alert_parts=[
+                rule_id,
+                window_start,
+                values["line"],
+                values["station"],
+                values["jig_id"],
+                values["model"],
+            ],
+        )
+        if alert:
+            alerts.append(alert)
+
+    return alerts
+
+
+# Detecta falha de Bluetooth em modelos que possuem Bluetooth.
+def _detect_bluetooth_failure(
+    window_data: pd.DataFrame,
+    baseline: pd.DataFrame,
+    state: dict[str, Any],
+    config: dict[str, Any],
+    window_start: pd.Timestamp,
+    window_end: pd.Timestamp,
+) -> list[dict[str, Any]]:
+    rule_id = "BLUETOOTH_FAILURE"
+    rule = config.get("rules", {}).get(rule_id, {})
+    if not rule.get("enabled", True):
+        return []
+
+    flag_column = rule.get("required_flag_column", "has_bluetooth")
+    ok_column = rule.get("ok_column", "bluetooth_ok")
+    needed = [
+        "line",
+        "station",
+        "jig_id",
+        "model",
+        "failed_step",
+        flag_column,
+        ok_column,
+    ]
+    if not _has_columns(window_data, needed):
+        return []
+
+    applicable = window_data[_truthy_series(window_data[flag_column])]
+    if applicable.empty:
+        return []
+
+    failed_steps = set(rule.get("failed_steps", ["bluetooth"]))
+    bt_not_ok = _false_series(applicable[ok_column])
+    step_fail = applicable["failed_step"].isin(failed_steps)
+    anomaly_rows = applicable[bt_not_ok | step_fail]
+
+    alerts = []
+    group_columns = ["line", "station", "jig_id", "model"]
+    for keys, failure_group in anomaly_rows.groupby(group_columns, dropna=False):
+        values = _keys_to_dict(group_columns, keys)
+        denominator = _count_attempts(applicable, values, group_columns)
+        failures = len(failure_group)
+        if not _has_minimum_volume(denominator, failures, rule):
+            continue
+
+        rate = failures / denominator
+        if rate < rule.get("min_rate", 0.10):
+            continue
+
+        baseline_rate = max(
+            _baseline_rate(baseline, "jig_id", values["jig_id"]),
+            _baseline_rate(baseline, "model", values["model"]),
+            _overall_baseline_rate(baseline),
+        )
+        severity = _severity_from_rate(rate, config)
+        alert = _new_alert(
+            state=state,
+            rule_id=rule_id,
+            rule_name="Falha de Bluetooth",
+            window_start=window_start,
+            window_end=window_end,
+            severity=severity,
+            what="bluetooth",
+            where_line=values["line"],
+            where_station=values["station"],
+            where_jig=values["jig_id"],
+            where_model=values["model"],
+            where_firmware=None,
+            where_api_key=None,
+            evidence=f"{failures} falhas de Bluetooth em {denominator} tentativas; taxa {rate:.2%}",
+            suggested_action=rule.get("suggested_action", ""),
+            total_attempts=denominator,
+            failures=failures,
+            rate=rate,
+            baseline_rate=baseline_rate,
+            ppm=rate * 1_000_000,
+            baseline_ppm=baseline_rate * 1_000_000,
+            is_systematic=True,
+            alert_parts=[
+                rule_id,
+                window_start,
+                values["line"],
+                values["station"],
+                values["jig_id"],
+                values["model"],
+            ],
+        )
+        if alert:
+            alerts.append(alert)
+
+    return alerts
+
+
 # Detecta MAC associado a mais de um serial no estado acumulado.
 def _detect_mac_duplicate(
     recordings: pd.DataFrame,
@@ -550,6 +762,8 @@ def _new_alert(
         "where_model": _clean_value(where_model),
         "where_firmware": _clean_value(where_firmware),
         "where_api_key": _clean_value(where_api_key),
+        "related_line_stop_category": "",
+        "related_line_stop_reason": "",
         "evidence": evidence,
         "suggested_action": suggested_action,
         "total_attempts": int(total_attempts) if total_attempts is not None else None,
@@ -615,6 +829,24 @@ def _count_attempts(
         mask = mask & data[column].astype(str).eq(str(values[column]))
 
     return int(mask.sum())
+
+
+# Converte coluna para booleano verdadeiro.
+def _truthy_series(values: pd.Series) -> pd.Series:
+    if values.dtype == "bool":
+        return values.fillna(False)
+
+    text = values.astype(str).str.strip().str.lower()
+    return text.isin(["true", "1", "yes", "sim"])
+
+
+# Converte coluna para booleano falso.
+def _false_series(values: pd.Series) -> pd.Series:
+    if values.dtype == "bool":
+        return values.eq(False)
+
+    text = values.astype(str).str.strip().str.lower()
+    return text.isin(["false", "0", "no", "nao"])
 
 
 # Converte chaves do groupby em dicionario.
@@ -726,6 +958,59 @@ def _mode_or_none(data: pd.DataFrame, column: str) -> str | None:
         return None
 
     return _clean_value(values.mode().iloc[0])
+
+
+# Adiciona contexto de paradas de linha aos alertas.
+def _enrich_alerts_with_line_stops(
+    alerts: list[dict[str, Any]],
+    line_stops: pd.DataFrame,
+) -> None:
+    if not alerts or line_stops.empty:
+        return
+
+    if not _has_columns(line_stops, ["stop_start", "stop_end"]):
+        return
+
+    stops = line_stops.copy()
+    stops["stop_start"] = pd.to_datetime(stops["stop_start"], errors="coerce")
+    stops["stop_end"] = pd.to_datetime(stops["stop_end"], errors="coerce")
+    stops = stops.dropna(subset=["stop_start", "stop_end"])
+
+    for alert in alerts:
+        related = _related_line_stops(alert, stops)
+        if related.empty:
+            continue
+
+        alert["related_line_stop_category"] = _join_unique(related, "category")
+        alert["related_line_stop_reason"] = _join_unique(related, "reason")
+
+
+# Busca paradas que cruzam a janela de um alerta.
+def _related_line_stops(
+    alert: dict[str, Any],
+    stops: pd.DataFrame,
+) -> pd.DataFrame:
+    window_start = pd.to_datetime(alert.get("window_start"), errors="coerce")
+    window_end = pd.to_datetime(alert.get("window_end"), errors="coerce")
+    if pd.isna(window_start) or pd.isna(window_end):
+        return pd.DataFrame()
+
+    mask = stops["stop_start"].lt(window_end) & stops["stop_end"].gt(window_start)
+    line = alert.get("where_line")
+    if line and "line" in stops.columns:
+        mask = mask & stops["line"].astype(str).eq(str(line))
+
+    return stops[mask]
+
+
+# Junta valores unicos de uma coluna de paradas.
+def _join_unique(data: pd.DataFrame, column: str) -> str:
+    if column not in data.columns:
+        return ""
+
+    values = [_clean_value(value) for value in data[column].dropna().unique()]
+    values = [value for value in values if value]
+    return "; ".join(values)
 
 
 # Cria um ID deterministico para o alerta.

@@ -12,6 +12,7 @@ try:
     from .ingestion import (
         LogReadError,
         build_ingestion_summary,
+        combine_line_stops,
         combine_recordings,
         load_batches_in_order,
         load_config,
@@ -31,6 +32,7 @@ except ImportError:
     from ingestion import (
         LogReadError,
         build_ingestion_summary,
+        combine_line_stops,
         combine_recordings,
         load_batches_in_order,
         load_config,
@@ -141,8 +143,10 @@ def main() -> int:
         processed_batches.append(batch)
 
     processed_recordings = combine_recordings(processed_batches)
+    processed_line_stops = combine_line_stops(processed_batches)
     alerts, outliers = run_main_rules(
         processed_recordings,
+        processed_line_stops,
         baseline_summary,
         state,
         config,

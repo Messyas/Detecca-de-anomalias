@@ -133,6 +133,19 @@ def combine_recordings(batches: list[LogBatch]) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True).sort_values("timestamp")
 
 
+# Junta as paradas de linha de todos os lotes em uma unica tabela.
+def combine_line_stops(batches: list[LogBatch]) -> pd.DataFrame:
+    frames = [batch.line_stops for batch in batches if not batch.line_stops.empty]
+    if not frames:
+        return pd.DataFrame()
+
+    line_stops = pd.concat(frames, ignore_index=True)
+    if "stop_start" in line_stops.columns:
+        return line_stops.sort_values("stop_start")
+
+    return line_stops
+
+
 # Le um arquivo Excel com abas de gravacao, paradas e dicionario.
 def _read_xlsx_file(
     path: Path,
