@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "processed_files": {},
+  "mac_serial_map": {},
+  "emitted_alerts": [],
+  "audit_events": [
+    {
+      "event_time": "2026-07-03T01:09:00.739160+00:00",
+      "event_type": "run_started",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "input_dir": "Logs",
+        "files_found": 0
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:09:00.739173+00:00",
+      "event_type": "baseline_generated",
+      "file": "recording_test_setupbox.xlsx",
+      "alert_id": null,
+      "details": {
+        "baseline_rows": 85,
+        "output": "Output\\baseline_summary.csv"
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:09:00.739177+00:00",
+      "event_type": "run_finished",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "files_processed": 0,
+        "files_skipped": 0
+      }
+    }
+  ]
+}

@@ -8,11 +8,13 @@ import sys
 from pathlib import Path
 
 try:
+    from .baseline import build_historical_baseline
     from .ingestion import (
         LogReadError,
         build_ingestion_summary,
         load_batches_in_order,
         load_config,
+        read_log_file,
     )
     from .state import (
         add_audit_event,
@@ -22,11 +24,13 @@ try:
         was_file_processed,
     )
 except ImportError:
+    from baseline import build_historical_baseline
     from ingestion import (
         LogReadError,
         build_ingestion_summary,
         load_batches_in_order,
         load_config,
+        read_log_file,
     )
     from state import (
         add_audit_event,
@@ -57,6 +61,11 @@ def parse_args() -> argparse.Namespace:
         default="Monitor/config.json",
         help="Caminho do arquivo de configuracao do monitor.",
     )
+    parser.add_argument(
+        "--baseline",
+        default="Data/recording_test_setupbox.xlsx",
+        help="Arquivo historico usado para calcular o baseline.",
+    )
     return parser.parse_args()
 
 
@@ -66,6 +75,7 @@ def main() -> int:
     input_dir = Path(args.input)
     output_dir = Path(args.output)
     config_path = Path(args.config)
+    baseline_path = Path(args.baseline)
 
     try:
         config = load_config(config_path)
@@ -79,10 +89,33 @@ def main() -> int:
     state_path = output_dir / state_file
     state = load_state(state_path)
 
+    try:
+        baseline_batch = read_log_file(baseline_path, config)
+    except (OSError, LogReadError) as error:
+        print(f"Erro no baseline: {error}", file=sys.stderr)
+        return 2
+
+    baseline_summary = build_historical_baseline(baseline_batch.recordings, config)
+    baseline_file = config.get("output", {}).get(
+        "baseline_file",
+        "baseline_summary.csv",
+    )
+    baseline_summary_path = output_dir / baseline_file
+    baseline_summary.to_csv(baseline_summary_path, index=False)
+
     add_audit_event(
         state,
         event_type="run_started",
         details={"input_dir": str(input_dir), "files_found": len(batches)},
+    )
+    add_audit_event(
+        state,
+        event_type="baseline_generated",
+        file=baseline_path.name,
+        details={
+            "baseline_rows": len(baseline_summary),
+            "output": str(baseline_summary_path),
+        },
     )
 
     processed_batches = []
@@ -117,6 +150,7 @@ def main() -> int:
 
     if not batches:
         print("Nenhum arquivo de log encontrado.")
+        print(f"Baseline salvo em: {baseline_summary_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -124,6 +158,7 @@ def main() -> int:
     if not processed_batches:
         print("Nenhum arquivo novo para processar.")
         print(f"Arquivos ja processados: {len(skipped_files)}")
+        print(f"Baseline salvo em: {baseline_summary_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -139,6 +174,7 @@ def main() -> int:
     if skipped_files:
         print(f"Arquivos ignorados por ja estarem no estado: {len(skipped_files)}")
 
+    print(f"Baseline salvo em: {baseline_summary_path}")
     print(f"Resumo salvo em: {summary_path}")
     print(f"Estado salvo em: {state_path}")
     return 0
