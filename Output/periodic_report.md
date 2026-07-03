@@ -1,6 +1,6 @@
 # Relatorio Periodico do Monitor
 
-Gerado em: 2026-07-03T04:39:14.963175+00:00
+Gerado em: 2026-07-03T14:59:20.001156+00:00
 
 ## Periodo processado
 
@@ -15,23 +15,23 @@ Gerado em: 2026-07-03T04:39:14.963175+00:00
 
 ## Alertas
 
-- Total de alertas: 63
+- Total de alertas: 36
 
 Por severidade:
-- medium: 36
-- critical: 27
+- medium: 19
+- critical: 17
 
 Por regra:
-- CYCLE_TIME_DRIFT: 36
-- FIRMWARE_BATCH: 11
+- CYCLE_TIME_DRIFT: 19
 - MAC_DUPLICATE: 6
 - REMOTE_API: 5
 - JIG_STEP_CHRONIC: 5
+- FIRMWARE_BATCH: 1
 
 ## HITL
 
-- Alertas pendentes de revisao: 27
-- critical: 27
+- Alertas pendentes de revisao: 17
+- critical: 17
 
 ## Outliers ignorados
 
@@ -48,7 +48,7 @@ Por regra:
 - Severidade critica: taxa >= 30%
 - JIG_STEP_CHRONIC: min_attempts=20, min_failures=3, min_rate=0.1
 - REMOTE_API: min_attempts=20, min_failures=3, min_rate=0.08
-- FIRMWARE_BATCH: min_attempts=30, min_failures=3, min_ppm=100000
+- FIRMWARE_BATCH: min_attempts=50, min_failures=5, min_ppm=100000
 - CYCLE_TIME_DRIFT: sem limiar explicito
 - MAC_DUPLICATE: sem limiar explicito
 - CABLE_ZERO_CHANNELS: min_attempts=20, min_failures=3, min_rate=0.1

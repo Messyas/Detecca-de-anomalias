@@ -1,87 +1,44 @@
-{"event_time": "2026-07-03T01:09:00.739160+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 0}}
-{"event_time": "2026-07-03T01:09:00.739173+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
-{"event_time": "2026-07-03T01:09:00.739177+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 0, "files_skipped": 0}}
-{"event_time": "2026-07-03T01:17:56.944470+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 0}}
-{"event_time": "2026-07-03T01:17:56.944484+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
-{"event_time": "2026-07-03T01:17:56.946438+00:00", "event_type": "rules_finished", "file": null, "alert_id": null, "details": {"alerts": 0, "outliers_ignored": 0, "alerts_output": "Output\\alerts.csv", "outliers_output": "Output\\outliers_ignored.csv"}}
-{"event_time": "2026-07-03T01:17:56.946445+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 0, "files_skipped": 0, "alerts": 0, "outliers_ignored": 0}}
-{"event_time": "2026-07-03T01:32:36.528064+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 0}}
-{"event_time": "2026-07-03T01:32:36.528082+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
-{"event_time": "2026-07-03T01:32:36.530049+00:00", "event_type": "rules_finished", "file": null, "alert_id": null, "details": {"alerts": 0, "outliers_ignored": 0, "alerts_output": "Output\\alerts.csv", "outliers_output": "Output\\outliers_ignored.csv"}}
-{"event_time": "2026-07-03T01:32:36.530056+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 0, "files_skipped": 0, "alerts": 0, "outliers_ignored": 0}}
-{"event_time": "2026-07-03T01:39:59.807504+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 0}}
-{"event_time": "2026-07-03T01:39:59.807517+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
-{"event_time": "2026-07-03T01:39:59.812065+00:00", "event_type": "rules_finished", "file": null, "alert_id": null, "details": {"alerts": 0, "outliers_ignored": 0, "alerts_output": "Output\\alerts.csv", "outliers_output": "Output\\outliers_ignored.csv"}}
-{"event_time": "2026-07-03T01:39:59.812072+00:00", "event_type": "outputs_generated", "file": null, "alert_id": null, "details": {"hitl_queue": "Output\\hitl_queue.csv", "audit_log": "Output\\audit_log.jsonl", "periodic_report": "Output\\periodic_report.md"}}
-{"event_time": "2026-07-03T01:39:59.812077+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 0, "files_skipped": 0, "alerts": 0, "outliers_ignored": 0}}
-{"event_time": "2026-07-03T04:38:59.075594+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 3}}
-{"event_time": "2026-07-03T04:38:59.075594+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
-{"event_time": "2026-07-03T04:38:59.357847+00:00", "event_type": "file_processed", "file": "log_2022-09-12.xlsx", "alert_id": null, "details": {"start_time": "2022-09-12T06:00:06", "end_time": "2022-09-12T23:32:50", "recording_rows": 6067, "line_stop_rows": 8}}
-{"event_time": "2026-07-03T04:38:59.604643+00:00", "event_type": "file_processed", "file": "log_2022-09-13.xlsx", "alert_id": null, "details": {"start_time": "2022-09-13T06:00:06", "end_time": "2022-09-13T23:14:01", "recording_rows": 5872, "line_stop_rows": 8}}
-{"event_time": "2026-07-03T04:38:59.848867+00:00", "event_type": "file_processed", "file": "log_2022-09-14.xlsx", "alert_id": null, "details": {"start_time": "2022-09-14T06:00:24", "end_time": "2022-09-14T23:32:03", "recording_rows": 5905, "line_stop_rows": 6}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-81a0ac394559", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ea9093d85255", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-28120ee5e7b9", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2003f573a53e", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c2940c58c6ff", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-4028d95903d3", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-6a56ac3f4178", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-58e0dfec20d9", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-138842fda9e6", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-3ac282e98535", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-e7dd49aa7213", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-0adbf73237d2", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f0e4e40d6163", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-56d42b2e29cf", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-d9911dabe521", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-0ca1b4971e20", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f874dbc1e99c", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-34faf5b102f7", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-a05a0bc3aea4", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-07dcd9806090", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-71444c033a7c", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f0eebad8f96d", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-5c1b761efe8a", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-595b6690f00c", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c3cefbbe2ef4", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c305b997366d", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c4e2b5cb7bc6", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-00c6ca23841d", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-113fcfa1a8ee", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ebd1f14eaac0", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-5ce0a9814cfa", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ea723b810065", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-27becac44692", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ae6934fe372f", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-3ddaf9cda956", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-a65e329e54ca", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-42e3d6b419a8", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-18efe0905f01", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2936243f9653", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f1b8d2051bc2", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c5e0ef109f08", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-427a9ecdea8b", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-bade847ad942", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f561b0a18d02", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-42e5f3117ff1", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-44a5b420ed77", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-0d390f1bbc46", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-5efeeff92eb8", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-755d181041f7", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2b247a271e28", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2b518d19cdc2", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-30d8cea64005", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-88f0b87218dc", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-7113e95e0cfd", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ac07e2f3595c", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-98d54152bd8c", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-9a65c7df9e00", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-8020533e2c64", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-6e4bd55bc9d8", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-61727d894272", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-a4b6e8005dc7", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-4cb707f81b39", "details": {}}
-{"event_time": "2026-07-03T04:39:14.955175+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-8baa6308b533", "details": {}}
-{"event_time": "2026-07-03T04:39:14.967174+00:00", "event_type": "rules_finished", "file": null, "alert_id": null, "details": {"alerts": 63, "outliers_ignored": 0, "alerts_output": "Output\\alerts.csv", "outliers_output": "Output\\outliers_ignored.csv"}}
-{"event_time": "2026-07-03T04:39:14.967174+00:00", "event_type": "outputs_generated", "file": null, "alert_id": null, "details": {"hitl_queue": "Output\\hitl_queue.csv", "audit_log": "Output\\audit_log.jsonl", "periodic_report": "Output\\periodic_report.md"}}
-{"event_time": "2026-07-03T04:39:14.967174+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 3, "files_skipped": 0, "alerts": 63, "outliers_ignored": 0}}
+{"event_time": "2026-07-03T14:59:15.459347+00:00", "event_type": "run_started", "file": null, "alert_id": null, "details": {"input_dir": "Logs", "files_found": 3}}
+{"event_time": "2026-07-03T14:59:15.459377+00:00", "event_type": "baseline_generated", "file": "recording_test_setupbox.xlsx", "alert_id": null, "details": {"baseline_rows": 85, "output": "Output\\baseline_summary.csv"}}
+{"event_time": "2026-07-03T14:59:15.561922+00:00", "event_type": "file_processed", "file": "log_2022-09-12.xlsx", "alert_id": null, "details": {"start_time": "2022-09-12T06:00:06", "end_time": "2022-09-12T23:32:50", "recording_rows": 6067, "line_stop_rows": 8}}
+{"event_time": "2026-07-03T14:59:15.663127+00:00", "event_type": "file_processed", "file": "log_2022-09-13.xlsx", "alert_id": null, "details": {"start_time": "2022-09-13T06:00:06", "end_time": "2022-09-13T23:14:01", "recording_rows": 5872, "line_stop_rows": 8}}
+{"event_time": "2026-07-03T14:59:15.765047+00:00", "event_type": "file_processed", "file": "log_2022-09-14.xlsx", "alert_id": null, "details": {"start_time": "2022-09-14T06:00:24", "end_time": "2022-09-14T23:32:03", "recording_rows": 5905, "line_stop_rows": 6}}
+{"event_time": "2026-07-03T14:59:19.997958+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-81a0ac394559", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997967+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2003f573a53e", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997969+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c2940c58c6ff", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997971+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-58e0dfec20d9", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997973+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-0adbf73237d2", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997975+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f0e4e40d6163", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997976+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-0ca1b4971e20", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997978+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f874dbc1e99c", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997979+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-34faf5b102f7", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997981+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-07dcd9806090", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997983+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-71444c033a7c", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997985+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-a65e329e54ca", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997986+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-42e3d6b419a8", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997988+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-18efe0905f01", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997989+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2936243f9653", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997991+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f1b8d2051bc2", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997992+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-c5e0ef109f08", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997994+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-427a9ecdea8b", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997996+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-bade847ad942", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997998+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-f561b0a18d02", "details": {}}
+{"event_time": "2026-07-03T14:59:19.997999+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-42e5f3117ff1", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998001+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-44a5b420ed77", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998003+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-5efeeff92eb8", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998004+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-755d181041f7", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998006+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2b247a271e28", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998008+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-2b518d19cdc2", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998010+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-30d8cea64005", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998011+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-88f0b87218dc", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998013+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-ac07e2f3595c", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998015+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-98d54152bd8c", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998016+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-8020533e2c64", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998018+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-6e4bd55bc9d8", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998020+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-61727d894272", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998021+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-a4b6e8005dc7", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998023+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-4cb707f81b39", "details": {}}
+{"event_time": "2026-07-03T14:59:19.998025+00:00", "event_type": "alert_registered", "file": null, "alert_id": "ALERT-8baa6308b533", "details": {}}
+{"event_time": "2026-07-03T14:59:20.003284+00:00", "event_type": "rules_finished", "file": null, "alert_id": null, "details": {"alerts": 36, "outliers_ignored": 0, "alerts_output": "Output\\alerts.csv", "outliers_output": "Output\\outliers_ignored.csv"}}
+{"event_time": "2026-07-03T14:59:20.003293+00:00", "event_type": "outputs_generated", "file": null, "alert_id": null, "details": {"hitl_queue": "Output\\hitl_queue.csv", "audit_log": "Output\\audit_log.jsonl", "periodic_report": "Output\\periodic_report.md"}}
+{"event_time": "2026-07-03T14:59:20.003296+00:00", "event_type": "run_finished", "file": null, "alert_id": null, "details": {"files_processed": 3, "files_skipped": 0, "alerts": 36, "outliers_ignored": 0}}
