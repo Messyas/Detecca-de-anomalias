@@ -121,6 +121,61 @@
         "alerts": 0,
         "outliers_ignored": 0
       }
+    },
+    {
+      "event_time": "2026-07-03T01:39:59.807504+00:00",
+      "event_type": "run_started",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "input_dir": "Logs",
+        "files_found": 0
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:39:59.807517+00:00",
+      "event_type": "baseline_generated",
+      "file": "recording_test_setupbox.xlsx",
+      "alert_id": null,
+      "details": {
+        "baseline_rows": 85,
+        "output": "Output\\baseline_summary.csv"
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:39:59.812065+00:00",
+      "event_type": "rules_finished",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "alerts": 0,
+        "outliers_ignored": 0,
+        "alerts_output": "Output\\alerts.csv",
+        "outliers_output": "Output\\outliers_ignored.csv"
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:39:59.812072+00:00",
+      "event_type": "outputs_generated",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "hitl_queue": "Output\\hitl_queue.csv",
+        "audit_log": "Output\\audit_log.jsonl",
+        "periodic_report": "Output\\periodic_report.md"
+      }
+    },
+    {
+      "event_time": "2026-07-03T01:39:59.812077+00:00",
+      "event_type": "run_finished",
+      "file": null,
+      "alert_id": null,
+      "details": {
+        "files_processed": 0,
+        "files_skipped": 0,
+        "alerts": 0,
+        "outliers_ignored": 0
+      }
     }
   ]
 }

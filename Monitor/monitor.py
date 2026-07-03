@@ -18,6 +18,12 @@ try:
         load_config,
         read_log_file,
     )
+    from .outputs import (
+        build_hitl_queue,
+        build_periodic_report,
+        write_audit_log,
+        write_periodic_report,
+    )
     from .rules import run_main_rules
     from .state import (
         add_audit_event,
@@ -37,6 +43,12 @@ except ImportError:
         load_batches_in_order,
         load_config,
         read_log_file,
+    )
+    from outputs import (
+        build_hitl_queue,
+        build_periodic_report,
+        write_audit_log,
+        write_periodic_report,
     )
     from rules import run_main_rules
     from state import (
@@ -165,6 +177,41 @@ def main() -> int:
     for alert_id in alerts["alert_id"].dropna().tolist():
         register_emitted_alert(state, alert_id)
 
+    summary = build_ingestion_summary(processed_batches)
+    summary_path = output_dir / "ingestion_summary.csv"
+    summary.to_csv(summary_path, index=False)
+
+    hitl_file = config.get("output", {}).get("hitl_queue_file", "hitl_queue.csv")
+    audit_file = config.get("output", {}).get("audit_file", "audit_log.jsonl")
+    report_file = config.get("output", {}).get(
+        "periodic_report_file",
+        "periodic_report.md",
+    )
+    hitl_path = output_dir / hitl_file
+    audit_path = output_dir / audit_file
+    report_path = output_dir / report_file
+
+    hitl_queue = build_hitl_queue(alerts)
+    hitl_queue.to_csv(hitl_path, index=False)
+
+    report_text = build_periodic_report(
+        alerts=alerts,
+        outliers=outliers,
+        hitl_queue=hitl_queue,
+        baseline=baseline_summary,
+        ingestion_summary=summary,
+        config=config,
+        output_paths={
+            "baseline": baseline_summary_path,
+            "alerts": alerts_path,
+            "outliers": outliers_path,
+            "hitl_queue": hitl_path,
+            "audit_log": audit_path,
+            "ingestion_summary": summary_path,
+        },
+    )
+    write_periodic_report(report_text, report_path)
+
     add_audit_event(
         state,
         event_type="rules_finished",
@@ -173,6 +220,15 @@ def main() -> int:
             "outliers_ignored": len(outliers),
             "alerts_output": str(alerts_path),
             "outliers_output": str(outliers_path),
+        },
+    )
+    add_audit_event(
+        state,
+        event_type="outputs_generated",
+        details={
+            "hitl_queue": str(hitl_path),
+            "audit_log": str(audit_path),
+            "periodic_report": str(report_path),
         },
     )
     add_audit_event(
@@ -186,16 +242,16 @@ def main() -> int:
         },
     )
     save_state(state, state_path)
-
-    summary = build_ingestion_summary(processed_batches)
-    summary_path = output_dir / "ingestion_summary.csv"
-    summary.to_csv(summary_path, index=False)
+    write_audit_log(state, audit_path)
 
     if not batches:
         print("Nenhum arquivo de log encontrado.")
         print(f"Baseline salvo em: {baseline_summary_path}")
         print(f"Alertas salvos em: {alerts_path}")
         print(f"Outliers salvos em: {outliers_path}")
+        print(f"Fila HITL salva em: {hitl_path}")
+        print(f"Auditoria salva em: {audit_path}")
+        print(f"Relatorio periodico salvo em: {report_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -206,6 +262,9 @@ def main() -> int:
         print(f"Baseline salvo em: {baseline_summary_path}")
         print(f"Alertas salvos em: {alerts_path}")
         print(f"Outliers salvos em: {outliers_path}")
+        print(f"Fila HITL salva em: {hitl_path}")
+        print(f"Auditoria salva em: {audit_path}")
+        print(f"Relatorio periodico salvo em: {report_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -224,6 +283,9 @@ def main() -> int:
     print(f"Baseline salvo em: {baseline_summary_path}")
     print(f"Alertas salvos em: {alerts_path} ({len(alerts)} alertas)")
     print(f"Outliers salvos em: {outliers_path} ({len(outliers)} ignorados)")
+    print(f"Fila HITL salva em: {hitl_path} ({len(hitl_queue)} pendentes)")
+    print(f"Auditoria salva em: {audit_path}")
+    print(f"Relatorio periodico salvo em: {report_path}")
     print(f"Resumo salvo em: {summary_path}")
     print(f"Estado salvo em: {state_path}")
     return 0
