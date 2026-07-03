@@ -45,6 +45,24 @@ O arquivo `.xlsx` pode conter as abas:
 
 Para `.csv`, o arquivo deve conter a tabela de `recordings`.
 
+## Nova execucao ou teste de configuracao
+
+Para uma nova execucao, principalmente apos alterar `Monitor/config.json`, recomenda-se usar uma nova pasta de saida. Isso evita sobrescrever os resultados finais em `Output/` e evita conflito com o estado salvo em `Output/monitor_state.json`.
+
+Exemplo:
+
+```powershell
+py .\Monitor\monitor.py --input .\Logs --output .\Output_config_teste --baseline .\Data\recording_test_setupbox.xlsx --config .\Monitor\config.json
+```
+
+Depois avalie os alertas gerados nessa nova pasta:
+
+```powershell
+py .\Monitor\evaluator.py --alerts .\Output_config_teste\alerts.csv --truth .\Data\gabarito_incidentes.csv --output .\Output_config_teste\evaluation_report.md
+```
+
+Assim, os arquivos em `Output/` permanecem preservados enquanto a nova configuracao e comparada.
+
 ## Colunas obrigatorias em recordings
 
 - `timestamp`
