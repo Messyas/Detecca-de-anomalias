@@ -12,13 +12,16 @@ try:
     from .ingestion import (
         LogReadError,
         build_ingestion_summary,
+        combine_recordings,
         load_batches_in_order,
         load_config,
         read_log_file,
     )
+    from .rules import run_main_rules
     from .state import (
         add_audit_event,
         load_state,
+        register_emitted_alert,
         register_processed_batch,
         save_state,
         was_file_processed,
@@ -28,13 +31,16 @@ except ImportError:
     from ingestion import (
         LogReadError,
         build_ingestion_summary,
+        combine_recordings,
         load_batches_in_order,
         load_config,
         read_log_file,
     )
+    from rules import run_main_rules
     from state import (
         add_audit_event,
         load_state,
+        register_emitted_alert,
         register_processed_batch,
         save_state,
         was_file_processed,
@@ -134,12 +140,45 @@ def main() -> int:
         register_processed_batch(state, batch)
         processed_batches.append(batch)
 
+    processed_recordings = combine_recordings(processed_batches)
+    alerts, outliers = run_main_rules(
+        processed_recordings,
+        baseline_summary,
+        state,
+        config,
+    )
+
+    alerts_file = config.get("output", {}).get("alerts_file", "alerts.csv")
+    outliers_file = config.get("output", {}).get(
+        "outliers_file",
+        "outliers_ignored.csv",
+    )
+    alerts_path = output_dir / alerts_file
+    outliers_path = output_dir / outliers_file
+    alerts.to_csv(alerts_path, index=False)
+    outliers.to_csv(outliers_path, index=False)
+
+    for alert_id in alerts["alert_id"].dropna().tolist():
+        register_emitted_alert(state, alert_id)
+
+    add_audit_event(
+        state,
+        event_type="rules_finished",
+        details={
+            "alerts": len(alerts),
+            "outliers_ignored": len(outliers),
+            "alerts_output": str(alerts_path),
+            "outliers_output": str(outliers_path),
+        },
+    )
     add_audit_event(
         state,
         event_type="run_finished",
         details={
             "files_processed": len(processed_batches),
             "files_skipped": len(skipped_files),
+            "alerts": len(alerts),
+            "outliers_ignored": len(outliers),
         },
     )
     save_state(state, state_path)
@@ -151,6 +190,8 @@ def main() -> int:
     if not batches:
         print("Nenhum arquivo de log encontrado.")
         print(f"Baseline salvo em: {baseline_summary_path}")
+        print(f"Alertas salvos em: {alerts_path}")
+        print(f"Outliers salvos em: {outliers_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -159,6 +200,8 @@ def main() -> int:
         print("Nenhum arquivo novo para processar.")
         print(f"Arquivos ja processados: {len(skipped_files)}")
         print(f"Baseline salvo em: {baseline_summary_path}")
+        print(f"Alertas salvos em: {alerts_path}")
+        print(f"Outliers salvos em: {outliers_path}")
         print(f"Resumo salvo em: {summary_path}")
         print(f"Estado salvo em: {state_path}")
         return 0
@@ -175,6 +218,8 @@ def main() -> int:
         print(f"Arquivos ignorados por ja estarem no estado: {len(skipped_files)}")
 
     print(f"Baseline salvo em: {baseline_summary_path}")
+    print(f"Alertas salvos em: {alerts_path} ({len(alerts)} alertas)")
+    print(f"Outliers salvos em: {outliers_path} ({len(outliers)} ignorados)")
     print(f"Resumo salvo em: {summary_path}")
     print(f"Estado salvo em: {state_path}")
     return 0

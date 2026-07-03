@@ -1,0 +1,1 @@
+alert_id,created_at,rule_id,rule_name,window_start,window_end,severity,status,review_required,what,where_line,where_station,where_jig,where_model,where_firmware,where_api_key,evidence,suggested_action,total_attempts,failures,rate,baseline_rate,ppm,baseline_ppm,is_systematic
