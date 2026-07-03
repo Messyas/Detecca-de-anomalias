@@ -8,8 +8,8 @@
   "processing": {
     "min_attempts_per_group": 20,
     "min_failures_per_group": 3,
-    "consecutive_windows_for_systematic": 2,
-    "alert_suppression_minutes": 60,
+    "consecutive_windows_for_systematic": 3,
+    "alert_suppression_minutes": 120,
     "deduplicate_alerts": true
   },
   "input": {
@@ -86,22 +86,22 @@
       "enabled": true,
       "description": "Firmware ou lote com falha concentrada por modelo, etapa e codigo.",
       "dimensions": ["firmware_version", "model", "failed_step", "error_code"],
-      "min_attempts": 30,
-      "min_failures": 3,
+      "min_attempts": 50,
+      "min_failures": 5,
       "min_ppm": 100000,
-      "baseline_multiplier": 3.0,
-      "high_ppm": 200000,
-      "critical_ppm": 300000,
+      "baseline_multiplier": 4.0,
+      "high_ppm": 250000,
+      "critical_ppm": 350000,
       "suggested_action": "Bloquear lote de firmware, validar pacote e checksums, e segregar unidades afetadas."
     },
     "CYCLE_TIME_DRIFT": {
       "enabled": true,
       "description": "Drift sistematico de cycle time por etapa.",
       "cycle_column_suffix": "_cycle_s",
-      "min_samples": 20,
-      "p95_baseline_multiplier": 1.5,
-      "median_mad_multiplier": 3.0,
-      "isolated_outlier_max_points": 2,
+      "min_samples": 30,
+      "p95_baseline_multiplier": 1.8,
+      "median_mad_multiplier": 4.0,
+      "isolated_outlier_max_points": 3,
       "suggested_action": "Verificar gargalo de software ou hardware na etapa e checar jig, estacao e paradas proximas."
     },
     "MAC_DUPLICATE": {
